@@ -1,0 +1,137 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:_1x6Helper.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="800"
+             x:Class="_1x6Helper.Views.MatchesWithView"
+             x:DataType="vm:MatchesWithViewModel"
+             Background="#1b2e3a">
+
+  <StackPanel Margin="20" Spacing="12">
+
+    <TextBlock Text="Find matches with" FontSize="16"
+               Foreground="#49a0c7" FontWeight="Medium"/>
+
+    <!-- Input row -->
+    <StackPanel Orientation="Horizontal" Spacing="10">
+      <TextBox Text="{Binding YourDotaId}"
+               Watermark="Enter your Dota ID..."
+               Width="250"
+               Background="#0a1e2c"
+               Foreground="#a7d1e3"
+               BorderBrush="#1e4d6b"
+               CornerRadius="5"/>
+        <TextBox Text="{Binding TargetDotaId}"
+               Watermark="Enter target Dota ID..."
+               Width="250"
+               Background="#0a1e2c"
+               Foreground="#a7d1e3"
+               BorderBrush="#1e4d6b"
+               CornerRadius="5"/>
+      <Button Content="Search"
+              Background="Transparent"
+              BorderBrush="#49a0c7"
+              Foreground="#49a0c7"
+              CornerRadius="6"
+              Padding="16,6"
+              Command="{Binding CheckCommand}"/>
+    </StackPanel>
+
+    <!-- Match ID list -->
+    <Border Background="#122d40" BorderBrush="#1e4d6b" BorderThickness="1" CornerRadius="8" Padding="12" MaxHeight="250">
+        <ScrollViewer>
+            <ListBox ItemsSource="{Binding MatchesWith}" 
+                     SelectedItem="{Binding SelectedMatchId}"
+                     Background="Transparent"
+                     BorderThickness="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="36,*,Auto" Margin="0,3">
+        <TextBlock Grid.Column="0"
+           Text="{Binding Number, StringFormat='{}{0})'}"
+           FontSize="13"
+           Foreground="#a7d1e3"
+           VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1"
+                   Text="{Binding MatchId}"
+                   FontSize="13"
+                   Foreground="#a7d1e3"
+                   VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="2"
+                   Text="{Binding CreatedAtUtc, StringFormat='{}{0:dd.MM.yyyy HH:mm}'}"
+                   FontSize="11"
+                   Foreground="#49a0c7"
+                   VerticalAlignment="Center"/>
+      </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                        <Setter Property="Background" Value="#1e4d6b"/>
+                    </Style>
+                </ListBox.Styles>
+            </ListBox>
+        </ScrollViewer>
+    </Border>
+      <!-- Match Info -->
+     <Border Background="#0d1921" CornerRadius="8" Padding="10"
+            IsVisible="{Binding IsStatsVisible}">
+        <StackPanel>
+            <Grid Margin="10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="80"/>
+
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="#" Foreground="#667b8a"/>
+                <TextBlock Grid.Column="1" Text="PLAYER" Foreground="#667b8a"/>
+                <TextBlock Grid.Column="2" Text="HERO" Foreground="#667b8a"/>
+                <TextBlock Grid.Column="3" Text="ABILITY" Foreground="#667b8a"/>
+                <TextBlock Grid.Column="4" Text="KDA" Foreground="#667b8a" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="5" Text="DAMAGE" Foreground="#667b8a" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="6" Text="RATING" Foreground="#667b8a" HorizontalAlignment="Center"/>
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding CurrentMatchPlayers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Place}" HorizontalAlignment="Center"/>
+                            <Image Grid.Column="2" Source="{Binding HeroIcon}" 
+                       Width="40" Height="25" 
+                       Stretch="UniformToFill" 
+                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" FontWeight="Bold"/>
+                            <Image Grid.Column="3" Source="{Binding TalentIcon}" 
+                       Width="30" Height="30" 
+                       VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="4" Text="{Binding Kda}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="5" Text="{Binding DamageDealt}" HorizontalAlignment="Center"/>
+                            <StackPanel Grid.Column="6" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding RatingStart}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding DisplayRatingChange}" Foreground="{Binding RatingColor}" FontSize="10" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
+
+  </StackPanel>
+</UserControl>

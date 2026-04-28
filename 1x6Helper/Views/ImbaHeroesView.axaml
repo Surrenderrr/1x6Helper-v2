@@ -1,0 +1,236 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:_1x6Helper.ViewModels"
+             x:DataType="vm:ImbaHeroesViewModel"
+             x:Class="_1x6Helper.Views.ImbaHeroesView"
+             Background="#12212c"
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             >
+    <UserControl.Resources>
+
+  <DataTemplate x:Key="HeroCardTemplate" x:DataType="vm:HeroCardViewModel">
+    <Border Margin="6" Background="#122d40"
+            BorderBrush="#1e4d6b" BorderThickness="1"
+            CornerRadius="8" Padding="6" Width="192">
+      <StackPanel Spacing="5">
+
+        <Border CornerRadius="5" ClipToBounds="True" Height="98">
+          <Panel>
+            <Border Background="#0a1e2c"
+                    IsVisible="{Binding HeroImage, Converter={x:Static ObjectConverters.IsNull}}">
+              <TextBlock Text="Loading..." FontSize="11"
+                         Foreground="#3a6a87"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+            </Border>
+            <Image Source="{Binding HeroImage}" Stretch="UniformToFill"
+                   IsVisible="{Binding HeroImage, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+          </Panel>
+        </Border>
+
+        <TextBlock Text="{Binding DisplayName}"
+                   FontSize="11" Foreground="#7aadcc"
+                   HorizontalAlignment="Center"
+                   TextTrimming="CharacterEllipsis"/>
+
+        <ItemsControl ItemsSource="{Binding Abilities}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"
+                          HorizontalAlignment="Center" Spacing="3"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:AbilityViewModel">
+              <Border Width="40" Height="40" CornerRadius="5"
+                      BorderThickness="2"
+                      BorderBrush="{Binding BorderColor}"
+                      Background="{Binding AbilityBackground}"
+                      Cursor="Hand">
+                <Border.Transitions>
+                  <Transitions>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                  </Transitions>
+                </Border.Transitions>
+                <Border.Styles>
+                  <Style Selector="Border:pointerover">
+                    <Setter Property="Background" Value="#1e4d6b"/>
+                  </Style>
+                </Border.Styles>
+                <Panel>
+                  <TextBlock Text="?" FontSize="16"
+                             Foreground="#3a6a87"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             IsVisible="{Binding AbilityImage, Converter={x:Static ObjectConverters.IsNull}}"/>
+                  <Image Source="{Binding AbilityImage}" Stretch="Fill"
+                         IsVisible="{Binding AbilityImage, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                  <Button Command="{Binding ToggleCommand}"
+                          Background="Transparent"
+                          BorderThickness="0"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Padding="0"/>
+                </Panel>
+              </Border>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+      </StackPanel>
+    </Border>
+  </DataTemplate>
+
+</UserControl.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+    <!-- Header -->
+    <Border Grid.Row="0" Background="#122d40"
+            BorderBrush="#1e4d6b" BorderThickness="0,0,0,1"
+            Padding="16,10">
+      <Grid ColumnDefinitions="*,Auto,Auto,Auto">
+    <TextBlock Text="Imba Heroes" FontSize="16" FontWeight="Medium"
+               Foreground="#49a0c7" VerticalAlignment="Center"/>
+
+    <!-- Кнопка Selected -->
+    <ToggleButton Grid.Column="1"
+                  Content="Selected only"
+                  IsChecked="{Binding ShowSelectedOnly}"
+                  Margin="0,0,8,0"
+                  CornerRadius="6"
+                  Padding="14,6"
+                  FontSize="12">
+      <ToggleButton.Styles>
+        <Style Selector="ToggleButton">
+          <Setter Property="Background" Value="Transparent"/>
+          <Setter Property="BorderBrush" Value="#1e4d6b"/>
+          <Setter Property="Foreground" Value="#3a6a87"/>
+        </Style>
+        <Style Selector="ToggleButton:checked">
+          <Setter Property="Background" Value="#0d3a4a"/>
+          <Setter Property="BorderBrush" Value="#00d4ff"/>
+          <Setter Property="Foreground" Value="#00d4ff"/>
+        </Style>
+        <Style Selector="ToggleButton:pointerover">
+          <Setter Property="Background" Value="#122d40"/>
+        </Style>
+      </ToggleButton.Styles>
+    </ToggleButton>
+
+    <Button Grid.Column="2" Content="Reset"
+            Command="{Binding ResetCommand}"
+            Background="Transparent" BorderBrush="#3a6a87"
+            Foreground="#7aadcc" CornerRadius="6"
+            Padding="16,6" Margin="0,0,8,0"/>
+
+    <Button Grid.Column="3" Content="Save"
+            Command="{Binding SaveCommand}"
+            Background="Transparent" BorderBrush="#49a0c7"
+            Foreground="#49a0c7" CornerRadius="6" Padding="16,6"/>
+</Grid>
+    </Border>
+
+    <!-- Sections -->
+    <ScrollViewer x:Name="HeroesScrollViewer" Grid.Row="1" Padding="10,10,10,0" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible">
+      <StackPanel Spacing="16">
+
+        <!-- STRENGTH -->
+        <StackPanel Spacing="8">
+          <StackPanel Orientation="Horizontal" Spacing="8" Margin="6,0,0,0">
+            <Image Source="avares://1x6Helper/Assets/Pictures/Strength.png" Width="22" Height="22"/>
+            <TextBlock Text="Strength" FontSize="14" FontWeight="Medium"
+                       Foreground="#c94f4f" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding StrengthHeroes.Count, StringFormat='({0})'}"
+                       FontSize="12" Foreground="#3a6a87" VerticalAlignment="Center"/>
+          </StackPanel>
+          <ItemsControl ItemsSource="{Binding StrengthHeroes}"
+                        ItemTemplate="{StaticResource HeroCardTemplate}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
+        </StackPanel>
+
+        <Border Height="1" Background="#1e4d6b" Margin="6,0"/>
+
+        <!-- AGILITY -->
+        <StackPanel Spacing="8">
+          <StackPanel Orientation="Horizontal" Spacing="8" Margin="6,0,0,0">
+            <Image Source="avares://1x6Helper/Assets/Pictures/Agility.png" Width="22" Height="22"/>
+            <TextBlock Text="Agility" FontSize="14" FontWeight="Medium"
+                       Foreground="#4caf7d" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding AgilityHeroes.Count, StringFormat='({0})'}"
+                       FontSize="12" Foreground="#3a6a87" VerticalAlignment="Center"/>
+          </StackPanel>
+          <ItemsControl ItemsSource="{Binding AgilityHeroes}"
+                        ItemTemplate="{StaticResource HeroCardTemplate}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
+        </StackPanel>
+
+        <Border Height="1" Background="#1e4d6b" Margin="6,0"/>
+
+        <!-- INTELLECT -->
+        <StackPanel Spacing="8">
+          <StackPanel Orientation="Horizontal" Spacing="8" Margin="6,0,0,0">
+            <Image Source="avares://1x6Helper/Assets/Pictures/Intellect.png" Width="22" Height="22"/>
+            <TextBlock Text="Intellect" FontSize="14" FontWeight="Medium"
+                       Foreground="#4a8fc9" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding IntellectHeroes.Count, StringFormat='({0})'}"
+                       FontSize="12" Foreground="#3a6a87" VerticalAlignment="Center"/>
+          </StackPanel>
+          <ItemsControl ItemsSource="{Binding IntellectHeroes}"
+                        ItemTemplate="{StaticResource HeroCardTemplate}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
+        </StackPanel>
+
+        <Border Height="1" Background="#1e4d6b" Margin="6,0"/>
+
+        <!-- UNIVERSAL -->
+        <StackPanel Spacing="8" Margin="0,0,0,20">
+          <StackPanel Orientation="Horizontal" Spacing="8" Margin="6,0,0,0">
+            <Image Source="avares://1x6Helper/Assets/Pictures/Universal.png" Width="22" Height="22"/>
+            <TextBlock Text="Universal" FontSize="14" FontWeight="Medium"
+                       Foreground="#b07dd4" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding AllAtributeHeroes.Count, StringFormat='({0})'}"
+                       FontSize="12" Foreground="#3a6a87" VerticalAlignment="Center"/>
+          </StackPanel>
+          <ItemsControl ItemsSource="{Binding AllAtributeHeroes}"
+                        ItemTemplate="{StaticResource HeroCardTemplate}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+          </ItemsControl>
+        </StackPanel>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- Status bar -->
+    <Border Grid.Row="2" Background="#0f2635"
+            BorderBrush="#1e4d6b" BorderThickness="0,1,0,0"
+            Padding="16,8">
+      <TextBlock x:Name="StatusText"
+                 FontSize="12"
+                 Foreground="#3a6a87"/>
+    </Border>
+
+  </Grid>
+
+</UserControl>

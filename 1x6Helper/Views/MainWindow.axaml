@@ -1,0 +1,75 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:_1x6Helper.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        d:DesignWidth="800"
+        d:DesignHeight="550"
+        MinWidth="1200"
+        Width="1200"
+        Height="700"
+        x:Class="_1x6Helper.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/Pictures/1x6logo.ico"
+        Title="1x6Helper"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaToDecorationsHint="True"
+        Background="#15242e"
+        
+        >
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+               DisplayMode="CompactInline"
+               OpenPaneLength="125"
+               CompactPaneLength="50"
+               PaneBackground="#223947"
+               Margin="0,30,0,0">
+        <SplitView.Pane> 
+        <StackPanel>
+			<Image VerticalAlignment="Top" Source="avares://1x6Helper/Assets/Pictures/1x6logo.ico"></Image>
+            <Button Content="General"
+                    Foreground="#5bbde8"
+                    BorderBrush="#5bbde8"
+                    Background="#182b38"
+                    Command="{Binding OpenGeneralCommand}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    
+                
+                />
+            <Button Content="Matches with"
+                    Foreground="#5bbde8"
+                    BorderBrush="#5bbde8"
+                    Background="#182b38"
+                    Command="{Binding OpenMatchesWithCommand}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    />
+            <Button Content="Imba heroes"
+                    Foreground="#5bbde8"
+                    BorderBrush="#5bbde8"
+                    Background="#182b38"
+                    Command="{Binding OpenImbaHeroesCommand}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    />
+        </StackPanel>
+    </SplitView.Pane>
+        <ContentControl Content="{Binding CurrentPage}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Background="#1b2e3a"/>
+
+
+
+
+
+    </SplitView>
+</Window>

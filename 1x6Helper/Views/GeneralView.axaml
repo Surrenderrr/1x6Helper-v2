@@ -1,0 +1,195 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:_1x6Helper.ViewModels"
+             x:DataType="vm:GeneralViewModel"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="530"
+             Width="1000"
+             x:Class="_1x6Helper.Views.GeneralView"
+             Background="#1b2e3a">
+   <UserControl.Styles>
+    <Style Selector="ItemsControl Border:pointerover">
+        <Setter Property="BorderBrush" Value="#ffffff"/>
+        <Setter Property="BoxShadow" Value="0 0 12 3 #49a0c7"/>
+        
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+            </Transitions>
+        </Setter>
+    </Style>
+</UserControl.Styles>
+
+  <Grid ColumnDefinitions="auto,*" Margin="10 10 10 10">
+
+      <StackPanel Spacing="13" Margin="20" Width="400">
+
+    <!-- Player row -->
+    <StackPanel Orientation="Horizontal" Spacing="12">
+        
+        <Border Width="64" Height="64" Background="#1e4d6b"
+                BorderBrush="#49a0c7" BorderThickness="2"
+                CornerRadius="6">
+            <Image Source="{Binding Avatar}"/>
+            
+        </Border>
+        <TextBlock Text="{Binding PlayerName}" VerticalAlignment="Center"
+                   FontSize="15" Foreground="#a7d1e3"/>
+    </StackPanel>
+
+    <!-- Statistics -->
+    <Border Background="#122d40" BorderBrush="#5bbde8"
+            BorderThickness="1" CornerRadius="8" Padding="12">
+        <StackPanel Spacing="4">
+            <TextBlock Text="Statistics" FontSize="18"
+                       Foreground="#a7d1e3" HorizontalAlignment="Center"/>
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto, Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Average place:" 
+                       FontSize="15" Foreground="#7aadcc" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Total matches:"
+                       FontSize="15" Foreground="#7aadcc" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Decency:"
+                       FontSize="15" Foreground="#7aadcc" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding AveragePlace}" 
+                       FontSize="15" Foreground="#3a6a87" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding TotalMatches}" 
+                       FontSize="15" Foreground="#3a6a87" HorizontalAlignment="Center"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Decency}" 
+                       FontSize="15" Foreground="#3a6a87" HorizontalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+
+    <!-- Current season -->
+    <Border Background="#122d40" BorderBrush="#5bbde8"
+            BorderThickness="1" CornerRadius="8" Padding="12">
+        <StackPanel Spacing="4">
+            <TextBlock Text="Current season" FontSize="18"
+                       Foreground="#a7d1e3" HorizontalAlignment="Center"/>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="1x6 rating:" FontSize="15" Foreground="#7aadcc" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="2x8 rating:"
+                           FontSize="15" Foreground="#7aadcc" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding CurrentSeasonRating}" FontSize="15" Foreground="#3a6a87" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CurrentSeasonDuoRating}" FontSize="15"
+                           Foreground="#3a6a87" HorizontalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+
+    <!-- Previous season -->
+    <Border Background="#122d40" BorderBrush="#5bbde8"
+            BorderThickness="1" CornerRadius="8" Padding="12">
+        <StackPanel Spacing="4">
+            <TextBlock Text="Previous season" FontSize="18"
+                       Foreground="#a7d1e3" HorizontalAlignment="Center"/>
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="1x6 rating:" FontSize="15" Foreground="#7aadcc" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Text="2x8 rating:"
+                           FontSize="15" Foreground="#7aadcc" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding PreviousSeasonRating}" FontSize="13" Foreground="#3a6a87" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PreviousSeasonDuoRating}" FontSize="13"
+                           Foreground="#3a6a87" HorizontalAlignment="Center"/>
+            </Grid>
+        </StackPanel>
+    </Border>
+
+    <!-- Input + Button -->
+    <TextBox Watermark="{Binding PlayerIdWatermark}"
+             Background="#0a1e2c" Foreground="#a7d1e3"
+             BorderBrush="#1e4d6b" CornerRadius="5"
+             Text="{Binding PlayerId}"
+             IsEnabled="{Binding IsNotRunning}"/>
+            
+
+    <Button HorizontalAlignment="Stretch"
+        HorizontalContentAlignment="Center"
+        Background="Transparent" CornerRadius="6" Padding="0,8"
+        BorderBrush="{Binding ButtonBrush}"
+        Foreground="{Binding ButtonBrush}"
+        Content="{Binding ButtonLabel}"
+        Command="{Binding ToggleCommand}"/>
+
+</StackPanel>
+      <!-- Teammates info:-->
+      <Grid Grid.Column="1" Margin="20" RowDefinitions="Auto,*" RowSpacing="6">
+    
+          
+        <TextBlock Grid.Row="0" Text="Teammates info:" FontSize="18" Foreground="#a7d1e3" FontWeight="Bold"/>
+        <Border Background="#122d40" BorderBrush="#1e4d6b"
+            BorderThickness="1" CornerRadius="8" Padding="12"
+            Grid.Row="1">
+        <ItemsControl ItemsSource="{Binding CurrentPlayerTeammates}" VerticalAlignment="Top" Classes.shaking ="{Binding IsListEmpty}">
+
+    <ItemsControl.Styles>
+        <Style Selector="ItemsControl:not(.shaking) > ContentPresenter">
+            <Style.Animations>
+                <Animation Duration="0:0:0.4" FillMode="Forward">
+                    <KeyFrame KeyTime="0:0:0">
+                        <Setter Property="Opacity" Value="0"/>
+                        <Setter Property="TranslateTransform.Y" Value="10"/>
+                    </KeyFrame>
+                    <KeyFrame KeyTime="0:0:0.4">
+                        <Setter Property="Opacity" Value="1"/>
+                        <Setter Property="TranslateTransform.Y" Value="0"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+        <Style Selector="ItemsControl.shaking > ContentPresenter">
+        <Style.Animations>
+            <Animation Duration="0:0:0.5" FillMode="Forward">
+                <KeyFrame KeyTime="0:0:0.1"><Setter Property="TranslateTransform.X" Value="-5"/></KeyFrame>
+                <KeyFrame KeyTime="0:0:0.2"><Setter Property="TranslateTransform.X" Value="5"/></KeyFrame>
+                <KeyFrame KeyTime="0:0:0.3"><Setter Property="TranslateTransform.X" Value="-5"/></KeyFrame>
+                <KeyFrame KeyTime="0:0:0.5">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Setter Property="TranslateTransform.X" Value="0"/>
+                    </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+    </ItemsControl.Styles>
+    <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+            <UniformGrid Columns="4" VerticalAlignment="Top"/>
+        </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+
+    <ItemsControl.ItemTemplate>
+        <DataTemplate>
+            <StackPanel Margin="10" HorizontalAlignment="Center">
+                
+                <Border Width="64" Height="64" Background="#1e4d6b"
+                        BorderBrush="#49a0c7" BorderThickness="2"
+                        CornerRadius="6">
+                    <Image Source="{Binding PlayerIcon}" Stretch="UniformToFill" 
+                           PointerPressed="OnImagePointerPressed"
+                           Cursor="Hand">
+                        <ToolTip.Tip>
+							<StackPanel>
+								<TextBlock Text="{Binding Id, StringFormat='ID: {0}'}" FontWeight="Bold"/>
+                <TextBlock Text="Click to copy" FontSize="11" Foreground="#a7d1e3"/>
+                            </StackPanel>
+                        </ToolTip.Tip>
+                    </Image>
+                </Border>
+                
+                <TextBlock Text="{Binding Name}" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,5,0,0"
+                           TextTrimming="CharacterEllipsis"
+                           MaxWidth="80"
+                           ToolTip.Tip="{Binding Name}"/>
+                           
+            </StackPanel>
+        </DataTemplate>
+    </ItemsControl.ItemTemplate>
+</ItemsControl>
+            </Border>
+   
+          </Grid>
+	  
+  </Grid>
+</UserControl>
